@@ -2,27 +2,45 @@
 
 namespace App\Service;
 
+use App\Dto\PasswordGeneratorRequest;
+
 class PasswordGeneratorService
 {
-    public function generatePassword(
-        int $length,
-        bool $useUppercase,
-        bool $useLowercase,
-        bool $useNumbers,
-    ): string {
-        $chars = '';
+    private const string LOWERCASE_CHARS = 'abcdefghijklmnopqrstuvwxyz';
+    private const string UPPERCASE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    private const string NUMBER_CHARS = '0123456789';
 
-        $useUppercase && $chars .= 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-        $useLowercase && $chars .= 'abcdefghijklmnopqrstuvwxyz';
-        $useNumbers && $chars .= '0123456789';
+    public function generatePassword(PasswordGeneratorRequest $request): string
+    {
+        $charsTypes = [];
 
+        $request->useLowercase && $charsTypes[] = self::LOWERCASE_CHARS;
+        $request->useUppercase && $charsTypes[] = self::UPPERCASE_CHARS;
+        $request->useNumbers && $charsTypes[] = self::NUMBER_CHARS;
+
+        // Add required characters
         $password = '';
-        $charsLength = strlen($chars);
-
-        for ($i = 0; $i < $length; $i++) {
-            $password .= $chars[random_int(0, $charsLength - 1)];
+        foreach ($charsTypes as &$chars) {
+            $password .= $this->pickRandomChar($chars);
         }
 
-        return $password;
+        $charsToUse = implode('', $charsTypes);
+        $remainingLength = $request->length - strlen($password);
+
+        // Add remaining characters
+        for ($i = 0; $i < $remainingLength; $i++) {
+            $password .= $this->pickRandomChar($charsToUse);
+        }
+
+        return str_shuffle($password);
+    }
+
+    private function pickRandomChar(string &$chars): string
+    {
+        $randomIndex = random_int(0, strlen($chars) - 1);
+        $selectedChar = $chars[$randomIndex];
+        $chars = substr_replace($chars, '', $randomIndex, 1);
+
+        return $selectedChar;
     }
 }
