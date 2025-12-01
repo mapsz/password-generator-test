@@ -18,10 +18,6 @@ class GeneratedPasswordType extends AbstractType
             ->add('length', IntegerType::class, [
                 'label' => 'Password Length',
                 'data' => 12,
-                'attr' => [
-                    'min' => 4,
-                    'max' => 64,
-                ],
             ])
             ->add('useUppercase', CheckboxType::class, [
                 'label' => 'Use uppercase letters',

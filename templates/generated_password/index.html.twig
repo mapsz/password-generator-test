@@ -44,12 +44,25 @@
             <div class="group">
                 <label>{{ form_label(form.length) }}</label>
                 {{ form_widget(form.length) }}
+                {{ form_errors(form.length) }}
             </div>
 
             <div class="group checks">
-                <div><label>{{ form_widget(form.useUppercase) }} {{ form_label(form.useUppercase) }}</label></div>
-                <div><label>{{ form_widget(form.useLowercase) }} {{ form_label(form.useLowercase) }}</label></div>
-                <div><label>{{ form_widget(form.useNumbers) }} {{ form_label(form.useNumbers) }}</label></div>
+                <div>
+                    {{ form_widget(form.useUppercase) }}
+                    {{ form_label(form.useUppercase) }}
+                    {{ form_errors(form.useUppercase) }}
+                </div>
+                <div>
+                    {{ form_widget(form.useLowercase) }}
+                    {{ form_label(form.useLowercase) }}
+                    {{ form_errors(form.useUppercase) }}
+                </div>
+                <div>
+                    {{ form_widget(form.useNumbers) }}
+                    {{ form_label(form.useNumbers) }}
+                    {{ form_errors(form.useUppercase) }}
+                </div>
             </div>
 
             <div class="group">
