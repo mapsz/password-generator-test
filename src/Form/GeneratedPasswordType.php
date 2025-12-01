@@ -2,14 +2,13 @@
 
 namespace App\Form;
 
-use App\Validator\AtLeastOneCharacterType;
+use App\Dto\PasswordGeneratorRequest;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Validator\Constraints as Assert;
 
 class GeneratedPasswordType extends AbstractType
 {
@@ -22,10 +21,6 @@ class GeneratedPasswordType extends AbstractType
                 'attr' => [
                     'min' => 4,
                     'max' => 64,
-                ],
-                'constraints' => [
-                    new Assert\NotBlank(),
-                    new Assert\Range(min: 4, max: 64),
                 ],
             ])
             ->add('useUppercase', CheckboxType::class, [
@@ -51,9 +46,7 @@ class GeneratedPasswordType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'constraints' => [
-                new AtLeastOneCharacterType(),
-            ],
+            'data_class' => PasswordGeneratorRequest::class,
         ]);
     }
 }

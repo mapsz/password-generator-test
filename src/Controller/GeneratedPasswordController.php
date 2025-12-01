@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Dto\PasswordGeneratorRequest;
 use App\Form\GeneratedPasswordType;
 use App\Service\PasswordGeneratorService;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,13 +23,9 @@ final class GeneratedPasswordController extends AbstractController
         $generatedPassword = null;
 
         if ($form->isSubmitted() && $form->isValid()) {
+            /** @var PasswordGeneratorRequest $data */
             $data = $form->getData();
-            $generatedPassword = $passwordGeneratorService->generatePassword(
-                $data['length'],
-                $data['useUppercase'],
-                $data['useLowercase'],
-                $data['useNumbers'],
-            );
+            $generatedPassword = $passwordGeneratorService->generatePassword($data);
         }
 
         return $this->render('generated_password/index.html.twig', [

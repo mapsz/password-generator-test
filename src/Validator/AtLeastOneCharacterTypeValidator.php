@@ -2,6 +2,7 @@
 
 namespace App\Validator;
 
+use App\Dto\PasswordGeneratorRequest;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
@@ -14,13 +15,13 @@ class AtLeastOneCharacterTypeValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, AtLeastOneCharacterType::class);
         }
 
-        if (!is_array($value)) {
+        if (!$value instanceof PasswordGeneratorRequest) {
             return;
         }
 
-        $hasAtLeastOne = ($value['useUppercase'] ?? false)
-            || ($value['useLowercase'] ?? false)
-            || ($value['useNumbers'] ?? false);
+        $hasAtLeastOne = $value->useUppercase
+            || $value->useLowercase
+            || $value->useNumbers;
 
         if (!$hasAtLeastOne) {
             $this->context->buildViolation($constraint->message)
