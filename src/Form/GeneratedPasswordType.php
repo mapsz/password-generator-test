@@ -1,0 +1,59 @@
+<?php
+
+namespace App\Form;
+
+use App\Validator\AtLeastOneCharacterType;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints as Assert;
+
+class GeneratedPasswordType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('length', IntegerType::class, [
+                'label' => 'Password Length',
+                'data' => 12,
+                'attr' => [
+                    'min' => 4,
+                    'max' => 64,
+                ],
+                'constraints' => [
+                    new Assert\NotBlank(),
+                    new Assert\Range(min: 4, max: 64),
+                ],
+            ])
+            ->add('useUppercase', CheckboxType::class, [
+                'label' => 'Use uppercase letters',
+                'required' => false,
+                'data' => true,
+            ])
+            ->add('useLowercase', CheckboxType::class, [
+                'label' => 'Use lowercase letters',
+                'required' => false,
+                'data' => true,
+            ])
+            ->add('useNumbers', CheckboxType::class, [
+                'label' => 'Use numbers',
+                'required' => false,
+                'data' => true,
+            ])
+            ->add('generate', SubmitType::class, [
+                'label' => 'Generate',
+            ]);
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'constraints' => [
+                new AtLeastOneCharacterType(),
+            ],
+        ]);
+    }
+}
