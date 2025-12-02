@@ -12,8 +12,9 @@ RUN apt-get update && apt-get install -y \
     zlib1g-dev \
     libxml2-dev \
     libonig-dev \
+    libpq-dev \
   && docker-php-ext-configure intl \
-  && docker-php-ext-install -j$(nproc) intl pdo_mysql zip \
+  && docker-php-ext-install -j$(nproc) intl pdo_pgsql zip \
   && rm -rf /var/lib/apt/lists/*
 
 # Composer
