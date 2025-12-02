@@ -1,5 +1,5 @@
 ```bash
-git clone <repository-url>
+git clone https://github.com/mapsz/password-generator-test
 cd password-generator-test
 ```
 
@@ -16,10 +16,7 @@ composer install
 ```
 
 ```bash
-# Создание базы данных
 php bin/console doctrine:database:create
-
-# Выполнение миграций
 php bin/console doctrine:migrations:migrate --no-interaction
 ```
 
